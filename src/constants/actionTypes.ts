@@ -1,0 +1,1 @@
+export const GET_PLANET_DETAILS = 'GET_PLANET_DETAILS';
