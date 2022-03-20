@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 // eslint-disable-next-line import/named
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '../../../store';

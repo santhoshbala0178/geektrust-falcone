@@ -19,7 +19,7 @@ export const getPlanetDetails = async () => {
   const planetDistances = planets.map(
     (item: PlanetDetailsType) => item.distance,
   );
-
+  // Convert the format to key-pair values
   const result = Object.assign.apply(
     {},
     planetNames.map((v: string, i: number) => ({ [v]: planetDistances[i] })),

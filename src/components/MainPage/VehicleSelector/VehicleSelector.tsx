@@ -1,8 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // eslint-disable-next-line import/named
 import { connect, ConnectedProps } from 'react-redux';
 import { setVehicleAndUpdateCount } from '../../../actions';
-import { TOTAL_SELECTION } from '../../../constants/constants';
 import { RootState } from '../../../store';
 import {
   VehicleSelectorContainer,
