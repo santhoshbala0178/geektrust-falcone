@@ -1,11 +1,14 @@
-import { PlanetDetailsType } from '../components/MainPage/MainPage/MainPage.type';
 import {
   PLANETS_API,
   RESULT_API,
   TOKEN_API,
   VEHICLES_API,
 } from '../constants/constants';
-import { GetResultType, ResultResponseType } from './apiUtils.type';
+import {
+  PlanetDetailsType,
+  GetResultType,
+  ResultResponseType,
+} from './apiUtils.type';
 
 export const getPlanetDetails = async () => {
   const response = await fetch(PLANETS_API);

@@ -1,12 +1,14 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
+import { store } from './store';
 import theme from './components/Theme';
 import Header from './components/Header';
 import AppContainer from './App.style';
 import Footer from './components/Footer';
 import MainPage from './components/MainPage/MainPage';
-import { Provider } from 'react-redux';
-import store from './store';
+import ResultPage from './components/ResultPage';
 
 function App() {
   return (
@@ -14,7 +16,12 @@ function App() {
       <ThemeProvider theme={theme}>
         <AppContainer>
           <Header />
-          <MainPage />
+          <Router>
+            <Routes>
+              <Route path="/" element={<MainPage />} />
+              <Route path="/result" element={<ResultPage />} />
+            </Routes>
+          </Router>
           <Footer />
         </AppContainer>
       </ThemeProvider>

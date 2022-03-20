@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 const ResetButton = styled.button`
-  color: ${(props) => props.theme.colors.textColor};
   background: none;
   outline: none;
   border: solid black 1px;

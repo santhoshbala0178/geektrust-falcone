@@ -8,10 +8,14 @@ export const HeaderContainer = styled.div`
 `;
 
 export const HeaderText = styled.h1`
-  color: ${(props) => props.theme.colors.textColor};
   flex: 1;
   text-align: center;
   margin-left: 5em;
+
+  @media (max-width: 500px) {
+    text-align: left;
+    margin-left: 0em;
+  }
 `;
 
 export const HeaderOptions = styled.div`

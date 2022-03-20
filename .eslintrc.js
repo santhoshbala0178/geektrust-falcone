@@ -28,6 +28,8 @@ module.exports = {
   },
   rules: {
     'linebreak-style': 'off',
+    'default-param-last': 'off',
+    "@typescript-eslint/default-param-last": ["off"],
     'prettier/prettier': [
       'error',
       {

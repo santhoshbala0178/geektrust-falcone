@@ -1,89 +1,84 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+// eslint-disable-next-line import/named
+import { connect, ConnectedProps } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { setPlanetDetails, setVehicleDetails } from '../../../actions';
 import { TOTAL_SELECTION } from '../../../constants/constants';
+import { RootState } from '../../../store';
 import { getPlanetDetails, getVehicleDetails } from '../../../utils/apiUtils';
 import FindButton from '../FindButton/FindButton';
 import PlanetDropDown from '../PlanetDropDown';
+import TimeTaken from '../TimeTaken';
 import VehicleSelector from '../VehicleSelector';
 import {
   MainPageContainer,
   MainPageHeaderText,
   PlanetSelectors,
   SelectorPanel,
-  TimeTaken,
-  TimeTakenDescription,
-  TimeTakenValue,
 } from './MainPage.style';
-import { PlanetKeyPairDetailType, VehicleDetailsType } from './MainPage.type';
 
-const MainPage = () => {
-  const [planetDetails, setPlanetDetails] = useState<PlanetKeyPairDetailType>(
-    {},
-  );
-  const [vehicleDetails, setVehicleDetails] = useState<VehicleDetailsType[]>(
-    [],
-  );
-  const [selectedPlanets, setSelectedPlanets] = useState<string[]>(
-    Array(TOTAL_SELECTION).fill(''),
-  );
-  const [selectedVehicles, setSelectedVehicles] = useState<string[]>(
-    Array(TOTAL_SELECTION).fill(''),
-  );
+const mapStateToProps = (state: RootState) => ({
+  planetDetailsReducer: state.planetDetailsReducer,
+  vehicleDetailsReducer: state.vehicleDetailsReducer,
+  selectedPlanetsReducer: state.selectedPlanetsReducer,
+  selectedVehiclesReducer: state.selectedVehiclesReducer,
+});
+
+const mapDispatchToProps = {
+  setPlanetDetailsProp: setPlanetDetails,
+  setVehicleDetailsProp: setVehicleDetails,
+};
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type Props = ConnectedProps<typeof connector>;
+
+const MainPage = ({
+  planetDetailsReducer,
+  vehicleDetailsReducer,
+  selectedPlanetsReducer,
+  selectedVehiclesReducer,
+  setPlanetDetailsProp,
+  setVehicleDetailsProp,
+}: Props) => {
+  const [timeTaken, setTimeTaken] = useState(0);
 
   useEffect(() => {
     const getData = async () => {
       // Get List of planets and their distances, list of vehicles
       const planetDetailsList = await getPlanetDetails();
       const vehicleList = await getVehicleDetails();
-      setPlanetDetails({ ...planetDetailsList });
-      setVehicleDetails([...vehicleList]);
+      setPlanetDetailsProp(planetDetailsList);
+      setVehicleDetailsProp(vehicleList);
     };
     getData();
-  }, []);
+  }, [setPlanetDetailsProp, setVehicleDetailsProp]);
 
-  const updateVehicleDetails = (
-    prevVehicleName: string,
-    curVehicleName: string,
-    id: number,
-  ) => {
-    // Update vehicle count based on the selection
-    setVehicleDetails(
-      vehicleDetails.map((vehicle: VehicleDetailsType) => {
-        if (vehicle.name === curVehicleName) {
-          return {
-            ...vehicle,
-            total_no: vehicle.total_no - 1,
-          };
-        } else if (vehicle.name === prevVehicleName) {
-          return {
-            ...vehicle,
-            total_no: vehicle.total_no + 1,
-          };
-        }
-
-        return vehicle;
-      }),
-    );
-
-    // update selected vehicles
-    const currentVehicles = [...selectedVehicles];
-    currentVehicles[id] = curVehicleName;
-    setSelectedVehicles([...currentVehicles]);
-  };
-
-  const timeTaken = useMemo(() => {
+  const updateTimeTaken = (prevVal: string, curVal: string, id: number) => {
     // Get the total time taken for search
-    let totalTime = 0;
-    selectedPlanets.map((planet, idx) => {
-      const selectedVehicle = vehicleDetails.find(
-        (vehicle) => vehicle.name === selectedVehicles[idx],
-      );
-      if (selectedVehicle) {
-        totalTime += planetDetails[planet] / selectedVehicle.speed;
-      }
-    });
+    let totalTime = timeTaken;
 
-    return totalTime;
-  }, [selectedPlanets, selectedVehicles, planetDetails, vehicleDetails]);
+    // Remove the previosly selected vehicles time
+    let selectedVehicle = vehicleDetailsReducer.find(
+      (vehicle) => vehicle.name === prevVal,
+    );
+    if (selectedVehicle) {
+      totalTime -=
+        planetDetailsReducer[selectedPlanetsReducer[id]] /
+        selectedVehicle.speed;
+    }
+    // add the current vehicles time
+    selectedVehicle = vehicleDetailsReducer.find(
+      (vehicle) => vehicle.name === curVal,
+    );
+    if (selectedVehicle) {
+      totalTime +=
+        planetDetailsReducer[selectedPlanetsReducer[id]] /
+        selectedVehicle.speed;
+    }
+
+    setTimeTaken(totalTime);
+  };
 
   return (
     <MainPageContainer>
@@ -98,34 +93,24 @@ const MainPage = () => {
               <SelectorPanel key={`selector-${id}`}>
                 <PlanetDropDown
                   dropdownId={id}
-                  planets={Object.keys(planetDetails)}
-                  setSelectedPlanets={setSelectedPlanets}
-                  selectedPlanets={selectedPlanets}
-                  selectedVehicles={selectedVehicles}
-                  updateVehicleDetails={updateVehicleDetails}
+                  updateTimeTaken={updateTimeTaken}
                 />
-                {selectedPlanets[id] && (
-                  <VehicleSelector
-                    id={id}
-                    vehicleDetails={vehicleDetails}
-                    planetDistance={planetDetails[selectedPlanets[id]]}
-                    updateVehicleDetails={updateVehicleDetails}
-                  />
+                {selectedPlanetsReducer[id] && (
+                  <VehicleSelector id={id} updateTimeTaken={updateTimeTaken} />
                 )}
               </SelectorPanel>
             );
           })}
       </PlanetSelectors>
-      <TimeTaken>
-        <TimeTakenDescription>Time Taken:</TimeTakenDescription>
-        <TimeTakenValue>{timeTaken}</TimeTakenValue>
-      </TimeTaken>
-      <FindButton
-        planetNames={selectedPlanets}
-        vehicleNames={selectedVehicles}
-      />
+      <TimeTaken timeTaken={timeTaken} />
+      <Link to="/result">
+        {selectedVehiclesReducer &&
+          selectedVehiclesReducer.every((vehicle) => vehicle !== '') && (
+            <FindButton timeTaken={timeTaken} />
+          )}
+      </Link>
     </MainPageContainer>
   );
 };
 
-export default MainPage;
+export default connector(MainPage);

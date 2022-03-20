@@ -2,7 +2,10 @@ import React from 'react';
 import ResetButton from './Reset.style';
 
 const Reset = () => {
-  return <ResetButton>Reset</ResetButton>;
+  const resetSelections = () => {
+    window.location.reload();
+  };
+  return <ResetButton onClick={resetSelections}>Reset</ResetButton>;
 };
 
 export default Reset;

@@ -1,6 +1,3 @@
-type FindButtonType = {
-  planetNames: string[];
-  vehicleNames: string[];
+export type FindButtonType = {
+  timeTaken: number;
 };
-
-export default FindButtonType;
