@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 import { store } from './store';
 import theme from './components/Theme';
-import Header from './components/Header';
+import Header from './components/Header/Header';
 import AppContainer from './App.style';
 import Footer from './components/Footer';
 import MainPage from './components/MainPage/MainPage';
