@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 // eslint-disable-next-line import/named
 import { connect, ConnectedProps } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { setPlanetDetails, setVehicleDetails } from '../../../actions';
 import { RootState } from '../../../store';
 import { getPlanetDetails, getVehicleDetails } from '../../../utils/apiUtils';
@@ -51,12 +50,10 @@ const MainPage = ({
       </MainPageHeaderText>
       <MainPageSelector timeTaken={timeTaken} setTimeTaken={setTimeTaken} />
       <TimeTaken timeTaken={timeTaken} />
-      <Link to="/result">
-        {selectedVehiclesReducer &&
-          selectedVehiclesReducer.every((vehicle) => vehicle !== '') && (
-            <FindButton timeTaken={timeTaken} />
-          )}
-      </Link>
+      {selectedVehiclesReducer &&
+        selectedVehiclesReducer.every((vehicle) => vehicle !== '') && (
+          <FindButton timeTaken={timeTaken} />
+        )}
     </MainPageContainer>
   );
 };

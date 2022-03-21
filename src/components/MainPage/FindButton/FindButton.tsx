@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 // eslint-disable-next-line import/named
 import { connect, ConnectedProps } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 import { setResultData } from '../../../actions';
 import { RootState } from '../../../store';
 import { getResult, getToken } from '../../../utils/apiUtils';
@@ -28,6 +29,7 @@ const FindButton = ({
   timeTaken,
 }: Props) => {
   const [token, setToken] = useState('');
+  const [redirect, setRedirect] = useState(false);
 
   const findFalcone = async () => {
     const result = await getResult({
@@ -64,9 +66,12 @@ const FindButton = ({
         timeTaken,
       });
     }
+
+    setRedirect(true);
   };
 
   useEffect(() => {
+    // Set initial Token
     const getTokenVal = async () => {
       const tokenVal = await getToken();
       setToken(tokenVal);
@@ -75,6 +80,9 @@ const FindButton = ({
     getTokenVal();
   }, []);
 
+  if (redirect) {
+    return <Navigate to="/result" />;
+  }
   return (
     <FindContainer>
       <FindFalcone onClick={findFalcone}>Find Falcone!</FindFalcone>

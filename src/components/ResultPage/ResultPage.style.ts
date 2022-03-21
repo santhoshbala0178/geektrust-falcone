@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const ResultPageContainer = styled.div`
   text-align: center;
   font-size: 1.5em;
+  margin-bottom: 2em;
 `;
 
 export const Message = styled.div`
