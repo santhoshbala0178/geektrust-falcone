@@ -10,9 +10,6 @@ import TimeTaken from '../TimeTaken';
 import { MainPageContainer, MainPageHeaderText } from './MainPage.style';
 
 const mapStateToProps = (state: RootState) => ({
-  planetDetailsReducer: state.planetDetailsReducer,
-  vehicleDetailsReducer: state.vehicleDetailsReducer,
-  selectedPlanetsReducer: state.selectedPlanetsReducer,
   selectedVehiclesReducer: state.selectedVehiclesReducer,
 });
 

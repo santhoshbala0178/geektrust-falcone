@@ -64,6 +64,7 @@ const VehicleSelector = ({
             <VehicleSelectorInput
               type="radio"
               name={`vehicle_selector_${id}`}
+              data-testid={`vehicle-selector-${id}-${idx}`}
               value={vehicle.name}
               checked={currentSelect !== '' && currentSelect === vehicle.name}
               disabled={

@@ -62,7 +62,7 @@ const MainPageSelector = ({
                 dropdownId={id}
                 updateTimeTaken={updateTimeTaken}
               />
-              {selectedPlanetsReducer[id] && (
+              {selectedPlanetsReducer && selectedPlanetsReducer[id] && (
                 <VehicleSelector id={id} updateTimeTaken={updateTimeTaken} />
               )}
             </SelectorPanel>

@@ -47,6 +47,7 @@ const PlanetDropDown = ({
     <PlanetDropDownContainer>
       <Autocomplete
         id={`planet-dropdown-${dropdownId}`}
+        data-testid={`planet-dropdown-${dropdownId}`}
         options={Object.keys(planetDetailsReducer).filter(
           (planet: string) => !selectedPlanetsReducer.includes(planet),
         )}

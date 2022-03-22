@@ -24,7 +24,7 @@ const TimeTaken = ({ timeTaken }: Props) => {
   return (
     <TimeTakenContainer>
       <TimeTakenDescription>Time Taken:</TimeTakenDescription>
-      <TimeTakenValue>{timeTaken}</TimeTakenValue>
+      <TimeTakenValue data-testid="time-taken">{timeTaken}</TimeTakenValue>
     </TimeTakenContainer>
   );
 };
